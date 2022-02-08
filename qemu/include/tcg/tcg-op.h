@@ -470,20 +470,6 @@ static inline void tcg_gen_add_i32(TCGContext *tcg_ctx, TCGv_i32 ret, TCGv_i32 a
 
 static inline void tcg_gen_sub_i32(TCGContext *tcg_ctx, TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2)
 {
-    uc_engine *uc = tcg_ctx->uc;
-
-    if (HOOK_EXISTS_BOUNDED(uc, UC_HOOK_TCG_OPCODE, tcg_ctx->pc_start)) {
-        struct hook *hook;
-        HOOK_FOREACH_VAR_DECLARE;
-        HOOK_FOREACH(uc, hook, UC_HOOK_TCG_OPCODE) {
-            if (hook->to_delete)
-                continue;
-            if (hook->op == UC_TCG_OP_SUB && hook->op_flags == 0) {
-                gen_uc_traceopcode(tcg_ctx, hook, (TCGv_i64)arg1, (TCGv_i64)arg2, 32, uc, tcg_ctx->pc_start);
-            }
-        }
-    }
-
     tcg_gen_op3_i32(tcg_ctx, INDEX_op_sub_i32, ret, arg1, arg2);
 }
 
@@ -703,20 +689,6 @@ static inline void tcg_gen_add_i64(TCGContext *tcg_ctx, TCGv_i64 ret, TCGv_i64 a
 
 static inline void tcg_gen_sub_i64(TCGContext *tcg_ctx, TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2)
 {
-    uc_engine *uc = tcg_ctx->uc;
-
-    if (HOOK_EXISTS_BOUNDED(uc, UC_HOOK_TCG_OPCODE, tcg_ctx->pc_start)) {
-        struct hook *hook;
-        HOOK_FOREACH_VAR_DECLARE;
-        HOOK_FOREACH(uc, hook, UC_HOOK_TCG_OPCODE) {
-            if (hook->to_delete)
-                continue;
-            if (hook->op == UC_TCG_OP_SUB && hook->op_flags == 0) {
-                gen_uc_traceopcode(tcg_ctx, hook, arg1, arg2, 64, uc, tcg_ctx->pc_start);
-            }
-        }
-    }
-
     tcg_gen_op3_i64(tcg_ctx, INDEX_op_sub_i64, ret, arg1, arg2);
 }
 

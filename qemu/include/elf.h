@@ -1,6 +1,8 @@
 #ifndef QEMU_ELF_H
 #define QEMU_ELF_H
 
+#include <stdint.h>
+
 /* 32-bit ELF base types. */
 typedef uint32_t Elf32_Addr;
 typedef uint16_t Elf32_Half;

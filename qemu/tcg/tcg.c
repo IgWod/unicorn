@@ -4147,3 +4147,5 @@ void tcg_expand_vec_op(TCGContext *tcg_ctx, TCGOpcode o, TCGType t, unsigned e, 
     g_assert_not_reached();
 }
 #endif
+
+#include "generate-tcg.inc.c"

@@ -261,7 +261,12 @@ uc_err uc_open(uc_arch arch, uc_mode mode, uc_engine **result)
                 return UC_ERR_MODE;
             }
             if (mode & UC_MODE_BIG_ENDIAN) {
+#ifdef UNICORN_HAS_ARM64EB
                 uc->init_arch = arm64eb_uc_init;
+#else
+		fprintf(stderr, "ERROR: ARM64EB support has not been enabled in CMake!\n");
+		exit(-1);
+#endif
             } else {
                 uc->init_arch = arm64_uc_init;
             }
@@ -1871,8 +1876,14 @@ static void find_context_reg_rw_function(uc_arch arch, uc_mode mode,
 #ifdef UNICORN_HAS_ARM64
     case UC_ARCH_ARM64:
         if (mode & UC_MODE_BIG_ENDIAN) {
+#ifdef UNICORN_HAS_ARM64EB
             rw->context_reg_read = arm64eb_context_reg_read;
             rw->context_reg_write = arm64eb_context_reg_write;
+#else
+	    fprintf(stderr, "ERROR: ARM64EB support has not been enabled in CMake!\n");
+	    exit(-1);
+#endif
+
         } else {
             rw->context_reg_read = arm64_context_reg_read;
             rw->context_reg_write = arm64_context_reg_write;

@@ -120,6 +120,10 @@ uint32_t crc32c(uint32_t crc, const uint8_t *data, unsigned int length)
  * poly = 0xEDB88320
  */
 
+// This definition conflitcs with zlib, so comment it out for now. Ideally
+// we would rename it within the project to avoid conflitcs and any potential
+// problems of removing this implementation.
+#if 0
 static const uint32_t crc32_table[256] = {
     0x00000000U, 0x77073096U, 0xEE0E612CU, 0x990951BAU,
     0x076DC419U, 0x706AF48FU, 0xE963A535U, 0x9E6495A3U,
@@ -196,3 +200,4 @@ uint32_t crc32(uint32_t crc, const uint8_t *data, unsigned int length)
     }
     return ~crc;
 }
+#endif

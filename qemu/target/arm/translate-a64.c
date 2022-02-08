@@ -317,6 +317,11 @@ static void gen_step_complete_exception(DisasContext *s)
 
 static inline bool use_goto_tb(DisasContext *s, int n, uint64_t dest)
 {
+    // We don't need direct tb linking, as it's a QEMU future to improve
+    // emulation performance.
+    // TODO: Revise potential side effects of always returning false.
+    return false;
+
     struct uc_struct *uc = s->uc;
     /* No direct tb linking with singlestep (either QEMU's or the ARM
      * debug architecture kind) or deterministic io
@@ -912,6 +917,10 @@ static void do_gpr_ld_memidx(DisasContext *s,
         g_assert(size < 3);
         tcg_gen_ext32u_i64(tcg_ctx, dest, dest);
     }
+
+    // For now we do not care about exceptions, so set always to false.
+    // TODO: Revise in the future.
+    iss_valid = false;
 
     if (iss_valid) {
         uint32_t syn;
@@ -14747,3 +14756,5 @@ const TranslatorOps aarch64_translator_ops = {
     .translate_insn     = aarch64_tr_translate_insn,
     .tb_stop            = aarch64_tr_tb_stop,
 };
+
+#include "generate-tcg-a64.inc.c"

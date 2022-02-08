@@ -26,6 +26,7 @@ int qemu_thread_create(struct uc_struct *uc, QemuThread *thread, const char *nam
                        void *(*start_routine)(void*),
                        void *arg, int mode)
 {
+#if 0
 #ifndef __MINGW32__
     sigset_t set, oldset;
 #endif
@@ -58,17 +59,20 @@ int qemu_thread_create(struct uc_struct *uc, QemuThread *thread, const char *nam
     pthread_sigmask(SIG_SETMASK, &oldset, NULL);
 
     pthread_attr_destroy(&attr);
-
+#endif
     return 0;
 }
 
 void qemu_thread_exit(struct uc_struct *uc, void *retval)
 {
+#if 0
     pthread_exit(retval);
+#endif
 }
 
 void *qemu_thread_join(QemuThread *thread)
 {
+#if 0
     int err;
     void *ret;
 
@@ -77,4 +81,5 @@ void *qemu_thread_join(QemuThread *thread)
         error_exit(err, __func__);
     }
     return ret;
+#endif
 }
